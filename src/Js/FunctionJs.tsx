@@ -1,5 +1,4 @@
-import { any } from 'prop-types';
-import React, { Children } from 'react'
+import React from 'react'
 
 const FunctionJs = () => {
     var options = [

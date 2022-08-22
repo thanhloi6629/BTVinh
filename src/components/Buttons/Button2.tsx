@@ -1,3 +1,5 @@
+import React from "react"
+
 export interface EventHandlerProps {
     onClick: (e: React.MouseEvent) => void
   }
