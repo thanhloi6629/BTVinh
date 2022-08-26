@@ -11,11 +11,14 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '@material-ui/core/TextField';
 import useStyles from './styles'; 
+
+import listArea from './sample'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface IStoreSetting {
     neighborhoodOrgId: INeighboringOrganization[],
+    areaId: string,
 }
 
 
@@ -30,7 +33,8 @@ const validateSchema = yup.object({
       orgId: yup.string(),
       orgName: yup.string(),
     })
-  )
+  ),
+  areaId: yup.string(),
 })
 
 const list = [
@@ -68,6 +72,8 @@ const list = [
   }
 ]
 
+
+
 const StoreSetting = () => {
 
   const classes = useStyles();
@@ -78,6 +84,7 @@ const StoreSetting = () => {
     resolver: yupResolver(validateSchema),
     defaultValues: {
         neighborhoodOrgId: [],
+        areaId: '',
     }
 
 })
@@ -161,6 +168,8 @@ const StoreSetting = () => {
                       label="近隣店舗"
                     />
                   )}
+                    // hiện kiểu dấu phẩy
+
                   // renderTags={(value) => (
                   //   <span style={{
                   //     whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 2, maxWidth: '85%', position: 'absolute', color: '#606060',
@@ -175,6 +184,35 @@ const StoreSetting = () => {
             {errors.neighborhoodOrgId && (<FormHelperText error={!!errors.neighborhoodOrgId}>{(errors.neighborhoodOrgId as any).message}</FormHelperText>)}
           </FormControl>
         </Grid>
+      </Grid>
+
+      <Grid item={true} xs={12} md={12} lg={4}>
+        <Controller
+          name="areaId"
+          control={control}
+          render={({ field: { ref, ...rest }}) => (
+            <FormControl variant="outlined" fullWidth={true} margin="normal">
+              <InputLabel shrink={true}>エリア</InputLabel>
+              <Select
+                {...rest}
+                inputRef={ref}
+                displayEmpty={true}
+                input={(
+                  <OutlinedInput
+                    label="エリア"
+                    classes={{
+                      notchedOutline: classes.notchedOutline,
+                    }}
+                  />
+                  )}
+              >
+                <MenuItem value="">--------</MenuItem>
+                {listArea && listArea?.map((item: any) => <MenuItem key={String(item?.areaId)} value={item?.areaId}>{item?.areaName || ''}</MenuItem>)}
+              </Select>
+            </FormControl>
+          )}
+        />
+        <FormHelperText error={!!errors?.areaId}>{errors?.areaId?.message || ''}</FormHelperText>
       </Grid>
     </div>
   )
