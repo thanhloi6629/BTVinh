@@ -5,12 +5,15 @@ import {
   import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Typography from '@material-ui/core/Typography';
-import { Controller,  useForm } from 'react-hook-form';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '@material-ui/core/TextField';
 import useStyles from './styles'; 
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { Controller, ControllerRenderProps, useForm } from 'react-hook-form';
+import momentUtils from '@date-io/moment';
+import moment from 'moment';
 
 import listArea from './sample'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -19,6 +22,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 interface IStoreSetting {
     neighborhoodOrgId: INeighboringOrganization[],
     areaId: string,
+    startDate: string,
+    endDate: string,
 }
 
 
@@ -35,6 +40,8 @@ const validateSchema = yup.object({
     })
   ),
   areaId: yup.string(),
+  startDate: yup.string(),
+  endDate: yup.string(),
 })
 
 const list = [
@@ -80,7 +87,7 @@ const StoreSetting = () => {
   const [listNeighboringOrganization, setListNeighboringOrganization] = useState<INeighboringOrganization[]>(list);
 
 
-  const { handleSubmit, formState: { errors }, control, setValue, setError, reset, watch, getValues} = useForm<IStoreSetting>({
+  const { handleSubmit, formState: { errors }, control, setValue, setError, reset, watch, getValues, clearErrors} = useForm<IStoreSetting>({
     resolver: yupResolver(validateSchema),
     defaultValues: {
         neighborhoodOrgId: [],
@@ -89,8 +96,86 @@ const StoreSetting = () => {
 
 })
   return (
-    <div>
+    <Box>
       <Grid container={true}>
+
+      <Grid item={true} container={true} lg={6} spacing={2}>
+                <Grid item={true} xs={2} md={2} lg={5}>
+                  <Box>
+                    <FormControl variant="outlined" fullWidth={true}>
+                      <Controller
+                        name="startDate"
+                        control={control}
+                        render={({ field: {ref, ...rest}  }) => (
+                          <MuiPickersUtilsProvider utils={momentUtils}>
+                            <KeyboardDatePicker
+                              {...rest}
+                              inputRef={ref}
+                              variant="inline"
+                              inputVariant="outlined"
+                              format="YYYY年MM月DD日"
+                              disableToolbar={true}
+                              autoOk={true}
+                              onChange={(e) => {
+                                rest.onChange(e?.format('YYYY-MM-DD') || 'Invalid date');
+                                if (moment(getValues('endDate')).format('YYYY-MM-DD') !== 'Invalid date' && moment(getValues('endDate')).isSameOrAfter(moment(e))) {
+                                  clearErrors(['endDate']);
+                                }
+                              }}
+                              fullWidth={true}
+                              error={!!errors?.startDate}
+                              helperText={errors?.startDate?.message}
+                              label="問い合わせ日"
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
+                            />
+                          </MuiPickersUtilsProvider>
+                        )}
+                      />
+                    </FormControl>
+                  </Box>
+                </Grid>
+                <Grid item={true}>
+                  <Box className={classes.middleMark}>～</Box>
+                </Grid>
+                <Grid item={true} xs={2} md={2} lg={5}>
+                  <Box>
+                    <FormControl variant="outlined" fullWidth={true}>
+                      <Controller
+                        name="endDate"
+                        control={control}
+                        render={( {field : { ref, ...rest }}) => (
+                          <MuiPickersUtilsProvider utils={momentUtils}>
+                            <KeyboardDatePicker
+                              {...rest}
+                              inputRef={ref}
+                              variant="inline"
+                              inputVariant="outlined"
+                              format="YYYY年MM月DD日"
+                              disableToolbar={true}
+                              autoOk={true}
+                              onChange={(e) => {
+                                rest.onChange(e?.format('YYYY-MM-DD') || 'Invalid date');
+                                if (moment(getValues('startDate')).format('YYYY-MM-DD') !== 'Invalid date' && moment(getValues('startDate')).isSameOrBefore(moment(e))) {
+                                  clearErrors(['startDate']);
+                                }
+                              }}
+                              fullWidth={true}
+                              error={!!errors?.endDate}
+                              helperText={errors?.endDate?.message}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
+                            />
+                          </MuiPickersUtilsProvider>
+                        )}
+                      />
+                    </FormControl>
+                  </Box>
+                </Grid>
+
+              </Grid>
         <Grid item={true} md={12} lg={12}>
           <Box marginTop={2} marginBottom={2}>
             <Typography className={classes.subTitle} variant="h6" align="left">
@@ -214,7 +299,7 @@ const StoreSetting = () => {
         />
         <FormHelperText error={!!errors?.areaId}>{errors?.areaId?.message || ''}</FormHelperText>
       </Grid>
-    </div>
+    </Box>
   )
 }
 

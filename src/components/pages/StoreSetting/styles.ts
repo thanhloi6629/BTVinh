@@ -2,7 +2,14 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-
+  middleMark: {
+    color: '#757575',
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontSize: '20px',
+    marginTop: '15px',
+  },
     root: {
         flexGrow: 1,
         marginTop: '10px',
