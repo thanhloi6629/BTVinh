@@ -5,6 +5,8 @@ import PillButton from './components/atoms/Buttons/PillButton';
 import FunctionJs from './Js/FunctionJs';
 import Test from 'components/pages/Test';
 import StoreSetting from 'components/pages/StoreSetting';
+import AreaMst from 'components/pages/areaMst/AreaMst';
+import { BrowserRouter } from 'react-router-dom';
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
      <FunctionJs></FunctionJs>
       <Test></Test>
       <StoreSetting></StoreSetting>
-    
+      <BrowserRouter>
+        <AreaMst></AreaMst>
+      </BrowserRouter>
     </div>
   );
 }

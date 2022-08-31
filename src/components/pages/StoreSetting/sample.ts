@@ -143,4 +143,5 @@ const listArea = [
         "effective": false
     },
 ]
+
 export default listArea;
