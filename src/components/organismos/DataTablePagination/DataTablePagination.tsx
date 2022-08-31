@@ -21,23 +21,23 @@ const DataTablePagination = ({
   isCheckedAll=false,
   onItemSelect,
   onItemSelectAll,
-  isSticky
+  isSticky,
+  handleChangePage,
+  handleChangeSize,
+  rowsPerPageOptions = [25, 50, 100],
+  page = 1,
+  size = rowsPerPageOptions[0],
+  totalItem = 0,
 
 }: DataTableProps) => {
   console.log("data", data);
-    const [page, setPage] = React.useState(2);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const classes = useTableStyles();
-
-    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null,newPage: number) => {
-      setPage(newPage);
-    };
     
-      const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log("event", event.target.value);
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-      };
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      console.log("event", event.target.value);
+      setRowsPerPage(parseInt(event.target.value, 10));
+    };
 
     const isSelected = (valueRow: string) => selectedRows?.includes(valueRow);
 
@@ -47,6 +47,11 @@ const DataTablePagination = ({
     const valueRowCheck = row[`${labelGetIdForCheckIcon}`] || '';
     onItemSelect && onItemSelect({checked: actionChecked, value: valueRowCheck})
   }
+
+
+  const onChangePage = (event: unknown, newPage: number) => {
+    handleChangePage(newPage + 1);
+  };
 
   return (
     <div>
@@ -127,13 +132,14 @@ const DataTablePagination = ({
         }
         </TableBody>
 
-      <TablePagination
-        component="div"
-        count={100}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        <TablePagination
+          rowsPerPageOptions={rowsPerPageOptions}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          component="div"
+          count={totalItem}
+          rowsPerPage={size}
+          page={page - 1}
+          onPageChange={onChangePage}
         />
       </Box>
       

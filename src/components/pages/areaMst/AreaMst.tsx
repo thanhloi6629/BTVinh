@@ -18,6 +18,17 @@ const AreaMst = () => {
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [isSelectAll, setIsSelectAll] = useState<boolean>(false);
     const [list, setList] = useState<IContent[]>([]);
+    const URLSearchParams = useQuery();
+
+    const pageInUrl = URLSearchParams.get('page') || 0;
+    const sizeInUrl = URLSearchParams.get('size') || 25;
+
+    const defaultSearchForm: IRequestSearchAreaMst = {
+      effectiveType: 'ALL',
+      page: Number(pageInUrl || 0),
+      size: Number(sizeInUrl || 5),
+    };
+    const [dataParams, setDataParams] = useState<IParamsSearch>(defaultSearchForm);
 
   const columns: DataTableColumn[] = [
     {
@@ -100,15 +111,8 @@ const AreaMst = () => {
 
   ];
 
-  const URLSearchParams = useQuery();
   // const pageInUrl = URLSearchParams.get('page') || 0;
   // const sizeInUrl = URLSearchParams.get('size') || 25;
-
-  const defaultSearchForm: IRequestSearchAreaMst = {
-    effectiveType: 'ALL',
-    page:  0,
-    size:  5,
-  };
 
   const checkArrIncludeArr = (arrParent:any[], arrChild: string[]):boolean => (arrParent?.filter((item:any) => (arrChild?.includes(item?.applyDocId)))?.length === arrParent?.length);
 
@@ -131,6 +135,50 @@ const AreaMst = () => {
 
 
   }
+
+
+  const handleChangeSize = async (sizeNumber: number) => {
+    try {
+      setLoading(true);
+      // const paramsNow = { ...dataParams, page: 1, size: sizeNumber };
+      // await fetchAreaStatusData(paramsNow);
+    } catch (error) {
+      // handleError({ error, enqueueSnackbar });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAreaStatusData = async (data: IRequestSearchAreaMst) => {
+    try {
+      const bodyRequest = {
+        effectiveType: data.effectiveType,
+        page: Number(data?.page ?? 0) < 1 ? 0 : Number(data?.page ?? 0) - 1,
+        size: data.size || 5,
+      };
+
+      // const res = await getAreaMstApi(bodyRequest);
+      // setList(res);
+      // setDataParams({
+      //   ...data,
+      //   totalItem: Number(res?.totalItem || 0),
+      // } as IParamsSearch);
+    } catch (error) {
+      // handleError({ error, enqueueSnackbar });
+    }
+  };
+
+  const handleChangePage = async (pageNumber: number) => {
+    try {
+      setLoading(true);
+      // const paramsNow = { ...dataParams, page: pageNumber, size: dataParams?.size };
+      // await fetchAreaStatusData(paramsNow);
+    } catch (error) {
+      // handleError({ error, enqueueSnackbar });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChangeItemSelectAll = async(isChecked: boolean) =>{
     console.log('itemAll', isChecked);
@@ -171,16 +219,16 @@ const AreaMst = () => {
   
   return (
     <div>
-      <DataTablePagination 
-        columns={columns} 
-        data={list}
-        isShowCheckBoxIcon={true}
-        isCheckedAll={true}
-        onItemSelect={(item) => handleChangeItemSelect(item)}
-        onItemSelectAll={(checked) => handleChangeItemSelectAll(checked)}
-        selectedRows={selectedRows}
-
-        ></DataTablePagination>
+        <DataTablePagination
+          data={list|| []}
+          columns={columns}
+          handleChangeSize={handleChangeSize}
+          handleChangePage={handleChangePage}
+          page={Number(dataParams?.page || 1)}
+          size={Number(dataParams?.size || 25)}
+          totalItem={Number(dataParams?.totalItem || 0)}
+          nonDataText="該当する顧客情報がありません"
+        />
     </div>
   )
 }

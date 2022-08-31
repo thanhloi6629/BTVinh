@@ -18,8 +18,8 @@ export interface DataTableProps {
     // TableHeadCustom?: () => JSX.Element | undefined;
     // isShowTableHeadCustom?: boolean,
     data: any[];
-    // handleChangeSize: (size: number) => Promise<void>;
-    // handleChangePage: (page: number) => Promise<void>;
+    handleChangeSize: (size: number) => Promise<void>;
+    handleChangePage: (page: number) => Promise<void>;
     columns: DataTableColumn[];
     onItemSelect?: (item:itemSelectType) => void;
     onItemSelectAll?: (checked: boolean) => void;
@@ -27,12 +27,12 @@ export interface DataTableProps {
     selectedRows?: string[];
     // showDeleteAndCheckBoxIcon?: boolean;
     nonDataText?: string;
-    // rowsPerPageOptions?: number[],
+    rowsPerPageOptions?: number[],
     // isSelectedRowCheckBox?: boolean,
     labelGetIdForCheckIcon?: string,
     // isSelectedOnlyRowCheckBox?: boolean,
     // showPagination?: boolean,
-    // showTablePagination?: boolean,
+    showTablePagination?: boolean,
     // showSelectedAll?: boolean,
     // isSelectedOnlyCheckBox?: boolean,
     isShowCheckBoxIcon?: boolean
@@ -45,8 +45,8 @@ export interface DataTableProps {
     // rowColor?: string,
     // hasBorderNotForCheckBox?: boolean,
     // hidePaginationBox?: boolean,
-    // size?: number,
-    // page: number,
-    // totalItem?: number,
+    size?: number,
+    page: number,
+    totalItem?: number,
     isCheckedAll?: boolean,
   }
