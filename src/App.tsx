@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div>
-     {/* <FIllData></FIllData> */}
+     <FIllData></FIllData>
      <Button type="danger"></Button>
      <FunctionJs></FunctionJs>
       <Test></Test>

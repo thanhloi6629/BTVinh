@@ -42,7 +42,7 @@ const FIllData = () =>  {
 
   return (
     <div>
-      <table>
+      <table className="table-fill">
         <thead >
           <tr>
             <th rowSpan={2}></th>

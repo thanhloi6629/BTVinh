@@ -6,8 +6,8 @@ const Pagination = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null,newPage: number) => {
-        setPage(newPage);
-      };
+      setPage(newPage);
+    };
     
       const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         console.log("event", event.target.value);

@@ -35,7 +35,7 @@ const AreaMst = () => {
       id: 'dispOrder',
       align: 'left',
       label: '表示順',
-      width: '100px',
+      width: '50px',
       content(row: IMstData, index: number) {
         return (
           <TableCell
@@ -54,7 +54,7 @@ const AreaMst = () => {
       id: 'areaName',
       align: 'left',
       label: 'エリア名',
-      width: '250px',
+      width: '500px',
       content(row: IMstData, index: number) {
         return (
           <TableCell
@@ -183,7 +183,7 @@ const AreaMst = () => {
   const handleChangeItemSelectAll = async(isChecked: boolean) =>{
     console.log('itemAll', isChecked);
     setIsSelectAll(isChecked);
-    const approvalDocumentListId = list?.map((item:any) => item?.applyDocId) || [];
+    const approvalDocumentListId = list?.map((item:any) => item?.areaId) || [];
     if (isChecked) {
       const selectNew = approvalDocumentListId?.reduce((arr:string[], item:string) => {
         if (!selectedRows?.includes(item)) {
@@ -222,12 +222,27 @@ const AreaMst = () => {
         <DataTablePagination
           data={list|| []}
           columns={columns}
+          //pagination
           handleChangeSize={handleChangeSize}
           handleChangePage={handleChangePage}
           page={Number(dataParams?.page || 1)}
           size={Number(dataParams?.size || 25)}
           totalItem={Number(dataParams?.totalItem || 0)}
+
           nonDataText="該当する顧客情報がありません"
+
+          isShowCheckBoxIcon={true}
+          onItemSelect={handleChangeItemSelect}
+
+          selectedRows={selectedRows}
+
+          labelGetIdForCheckIcon="areaId"
+
+          isCheckedAll={isSelectAll}
+          onItemSelectAll={handleChangeItemSelectAll}
+
+          isSticky={true}
+          isSticky2={true}
         />
     </div>
   )

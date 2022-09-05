@@ -13,8 +13,8 @@ code {
 }
 
 
-table tr td, 
-table tr th{
+.table-fill table tr td, 
+.table-fill table tr th{
   border: 1px solid black;
   min-width: 100px;
   width: 100px;
