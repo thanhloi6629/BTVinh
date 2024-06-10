@@ -16,11 +16,11 @@ function App() {
      <FIllData></FIllData>
      <Button type="danger"></Button>
      <FunctionJs></FunctionJs>
-      <Test></Test>
+      {/* <Test></Test>
       <StoreSetting></StoreSetting>
       <BrowserRouter>
         <AreaMst></AreaMst>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   );
 }
